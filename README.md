@@ -28,12 +28,12 @@ Sistem prediksi status produk **(Laris / Tidak Laris)** berbasis Machine Learnin
 │   GET  /sales    →  Baca CSV  →  Filter & Paginate          │
 │   POST /predict  →  Load model  →  Return prediksi          │
 │                                                             │
-│   ┌──────────────────────────────────────────────────────┐ │
-│   │              ML Module (Scikit-learn)                │ │
-│   │   RandomForestClassifier  ──►  model.joblib          │ │
-│   │   Input: jumlah_penjualan, harga, diskon             │ │
-│   │   Output: Laris / Tidak  +  confidence score         │ │
-│   └──────────────────────────────────────────────────────┘ │
+│   ┌──────────────────────────────────────────────────────┐  │
+│   │              ML Module (Scikit-learn)                │  │
+│   │   RandomForestClassifier  ──►  model.joblib          │  │
+│   │   Input: jumlah_penjualan, harga, diskon             │  │
+│   │   Output: Laris / Tidak  +  confidence score         │  │
+│   └──────────────────────────────────────────────────────┘  │
 └──────────────────────────┬──────────────────────────────────┘
                            │
                            ▼
@@ -317,38 +317,6 @@ diskon            :  0.20%
 ```
 
 > Catatan: Accuracy 100% menunjukkan bahwa label `Laris/Tidak` dalam dataset ini sangat ditentukan oleh `jumlah_penjualan`. Produk dengan penjualan tinggi konsisten berlabel Laris dan sebaliknya — polanya sangat linear dan jelas.
-
----
-
-## 💡 Design Decisions
-
-**1. Random Forest vs Logistic Regression / Decision Tree**
-Random Forest dipilih karena ensemble dari 100 pohon menghasilkan prediksi yang lebih stabil dan tidak overfit pada satu pola. Tidak membutuhkan normalisasi fitur seperti Logistic Regression.
-
-**2. JWT tanpa database**
-Dummy user disimpan di `config.py` sesuai scope assignment. Di produksi, ini diganti dengan database dan password hashing (bcrypt).
-
-**3. CSV sebagai data source, dibaca per-request**
-Cukup untuk 5.000 baris tanpa perlu database. Untuk skala lebih besar, akan dimigrasikan ke PostgreSQL/MySQL dengan ORM seperti SQLAlchemy.
-
-**4. Model di-cache in-memory di backend**
-Variable `_model_cache` memastikan `model.joblib` hanya dibaca dari disk sekali saat pertama kali `/predict` dipanggil. Request berikutnya langsung pakai cache — lebih efisien.
-
-**5. Pagination server-side**
-Data 5.000 baris tidak dikirim sekaligus ke browser. Backend hanya mengirim slice yang diminta (misal 20 baris), mengurangi beban jaringan dan rendering.
-
-**6. CORS allow all origins**
-Untuk development. Di produksi, `allow_origins` dikunci ke domain frontend yang spesifik.
-
----
-
-## 🔧 Asumsi yang Digunakan
-
-- Label `Tidak` di kolom `status` merepresentasikan **"Tidak Laris"**
-- Satu dummy user (`admin/admin123`) cukup untuk scope technical test ini
-- Model tidak perlu di-retrain secara otomatis — cukup jalankan `train.py` secara manual
-- Token JWT tidak menggunakan refresh token; expire dalam **60 menit**
-- Dataset CSV dianggap sudah bersih (tidak ada handling untuk missing value yang kompleks)
 
 ---
 
