@@ -99,7 +99,7 @@ mini_ai_sales_prediction_system/
 
 Pastikan sudah terinstall:
 - **Python** 3.9+ → https://python.org/downloads
-- **Node.js** 18+ → https://nodejs.org
+- **Node.js** 22+ → https://nodejs.org
 - **Git** → https://git-scm.com
 
 ### Clone Repository
