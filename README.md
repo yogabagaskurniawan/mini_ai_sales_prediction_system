@@ -13,10 +13,10 @@ Sistem prediksi status produk **(Laris / Tidak Laris)** berbasis Machine Learnin
 │                    BROWSER (User)                           │
 │                                                             │
 │              React JS + Tailwind CSS                        │
-│     ┌──────────┐   ┌─────────────┐   ┌─────────────────┐  │
-│     │  Login   │   │ Sales Table │   │  Predict Form   │  │
-│     │   Page   │   │ + Pagination│   │  + AI Result    │  │
-│     └──────────┘   └─────────────┘   └─────────────────┘  │
+│     ┌──────────┐   ┌─────────────┐   ┌─────────────────┐    │
+│     │  Login   │   │ Sales Table │   │  Predict Form   │    │
+│     │   Page   │   │ + Pagination│   │  + AI Result    │    │
+│     └──────────┘   └─────────────┘   └─────────────────┘    │
 └──────────────────────────┬──────────────────────────────────┘
                            │ HTTP REST API
                            │ Authorization: Bearer <JWT>
@@ -79,11 +79,9 @@ mini_ai_sales_prediction_system/
 │   │   │   ├── LoginPage.jsx
 │   │   │   └── DashboardPage.jsx
 │   │   └── components/
-│   │       ├── StatCard.jsx          # Kartu ringkasan statistik
 │   │       ├── SalesTable.jsx        # Tabel + pagination + filter + search
 │   │       └── PredictForm.jsx       # Form prediksi + hasil AI
 │   ├── package.json
-│   └── tailwind.config.js
 ├── ml/
 │   ├── train.py             # Script training model ML
 │   └── model.joblib         # Model tersimpan (hasil training)
@@ -100,7 +98,7 @@ mini_ai_sales_prediction_system/
 ### Prasyarat
 
 Pastikan sudah terinstall:
-- **Python** 3.10+ → https://python.org/downloads
+- **Python** 3.9+ → https://python.org/downloads
 - **Node.js** 18+ → https://nodejs.org
 - **Git** → https://git-scm.com
 
@@ -363,3 +361,26 @@ Untuk development. Di produksi, `allow_origins` dikunci ke domain frontend yang 
 | Auth     | JWT (python-jose)                              |
 | ML       | Scikit-learn, Pandas, NumPy, Joblib            |
 | Dataset  | CSV (5.000 baris)                              |
+
+---
+
+## 🖼️ Screenshot UI
+
+### Halaman Login
+Autentikasi dengan dummy user. Token JWT disimpan di `localStorage` setelah login berhasil.
+
+![Preview NFT Display & Send](https://github.com/yogabagaskurniawan/mini_ai_sales_prediction_system/blob/main/preview/screen-login.png)
+
+---
+
+### Dashboard — Data Penjualan
+Menampilkan ringkasan statistik (total produk, produk laris, tidak laris, rata-rata terjual) dan tabel data dengan fitur search, filter status, dan pagination server-side.
+
+![Preview NFT Display & Send](https://github.com/yogabagaskurniawan/mini_ai_sales_prediction_system/blob/main/preview/screen-dashboard-tabel.png)
+
+---
+
+### Dashboard — Prediksi AI
+Form input data produk (jumlah terjual, harga, diskon) yang langsung terhubung ke endpoint `POST /predict`. Hasil prediksi ditampilkan beserta confidence score dari model.
+
+![Preview NFT Display & Send](https://github.com/yogabagaskurniawan/mini_ai_sales_prediction_system/blob/main/preview/screen-dashboard-prediksi.png)
